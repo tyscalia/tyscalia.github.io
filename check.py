@@ -12,6 +12,9 @@ What it checks, and why each one earns its place:
   links       every internal href/src in the generated html resolves to a file
               (catches renamed slugs, broken nav, missing stylesheet)
   feed        feed.xml parses as XML, one entry per piece, links match, dated
+  meta        404.html and robots.txt exist (Pages and crawlers look for these
+              by exact name, so a rename would silently break them), and the
+              sitemap lists exactly the real pages, never the 404
   style       no em dashes or en dashes anywhere in the output. House rule.
   determinism building twice produces byte-identical files. This is what makes
               the CI freshness check meaningful, so it is a test, not a nicety.
@@ -172,6 +175,33 @@ def main() -> int:
         )
         updated = root.find("a:updated", ATOM)
         check(updated is not None and bool(updated.text), "feed has no <updated>")
+
+    # meta -----------------------------------------------------------------
+    not_found = build.ROOT / "404.html"
+    if check(
+        not_found.exists(),
+        "404.html missing (Pages serves this exact file for unknown paths)",
+    ):
+        check(
+            "Nothing lives" in visible_text(not_found),
+            "404.html does not contain its own prose",
+        )
+
+    robots = build.ROOT / "robots.txt"
+    if check(robots.exists(), "robots.txt missing"):
+        check(
+            "Sitemap:" in robots.read_text(encoding="utf-8"),
+            "robots.txt does not point at the sitemap",
+        )
+
+    sitemap = build.ROOT / "sitemap.xml"
+    if check(sitemap.exists(), "sitemap.xml missing"):
+        sitemap_text = sitemap.read_text(encoding="utf-8")
+        for doc in every:
+            if doc.slug == "404":
+                check(doc.url not in sitemap_text, "sitemap lists the 404 page")
+            else:
+                check(doc.url in sitemap_text, f"sitemap is missing {doc.url}")
 
     # style ----------------------------------------------------------------
     for path in manifest:

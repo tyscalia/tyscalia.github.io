@@ -81,6 +81,8 @@ class Doc:
         """Root-relative URL, with the trailing slash Pages will redirect to."""
         if self.kind == "index":
             return "/"
+        if self.slug == "404":
+            return "/404.html"
         prefix = "pieces" if self.kind == "piece" else ""
         return f"/{prefix}/{self.slug}/" if prefix else f"/{self.slug}/"
 
@@ -90,6 +92,10 @@ class Doc:
             return ROOT / "index.html"
         if self.kind == "piece":
             return ROOT / "pieces" / self.slug / "index.html"
+        if self.slug == "404":
+            # Pages serves /404.html for unknown paths, so this one cannot
+            # live in a directory of its own.
+            return ROOT / "404.html"
         return ROOT / self.slug / "index.html"
 
     @property
@@ -314,7 +320,8 @@ def build(quiet: bool = False) -> list[str]:
         write(doc.out_path, render_piece(doc), written)
 
     write(ROOT / "feed.xml", render_feed(pieces), written)
-    write(ROOT / "sitemap.xml", render_sitemap([index[0], *pages, *pieces]), written)
+    listed = [d for d in [index[0], *pages, *pieces] if d.slug != "404"]
+    write(ROOT / "sitemap.xml", render_sitemap(listed), written)
 
     for asset in sorted(ASSETS.rglob("*")):
         if asset.is_dir():
