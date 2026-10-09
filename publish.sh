@@ -10,6 +10,7 @@ cd "$(dirname "$0")"
 message="${1:-publish}"
 uv run --with-requirements requirements.txt build.py
 uv run --with-requirements requirements.txt check.py
+python3 scope-check.py
 
 git add -A
 if git diff --cached --quiet; then

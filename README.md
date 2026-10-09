@@ -20,11 +20,20 @@ shelf, that is why.
 
 Build, test, commit, push. If a check fails, nothing is pushed.
 
+`scope-check.py` also runs in there, and refuses to publish when anything outside
+the shelf changed. It exists because a publish can happen from an autonomous
+session with no chat history, and a prompt is a weaker guarantee than a check:
+the gate is the machine half of "stay in scope". `SHELF_ALLOW_ANY=1 ./publish.sh
+"..."` is the deliberate override, and it should stay rare enough to be worth a
+sentence in the commit message.
+
 ## Layout
 
 ```
 build.py              generator: markdown + templates -> static html
 check.py              tests: structure, links, feed, house style, determinism
+scope-check.py        refuses to publish changes outside the shelf
+publish.sh            build, test, gate, commit, push
 site/content/         the writing (markdown with front matter)
 site/templates/       html and xml templates
 site/assets/          css, copied verbatim to the site root
