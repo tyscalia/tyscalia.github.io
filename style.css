@@ -1,0 +1,127 @@
+/* tyscalia.github.io
+   One stylesheet, no webfonts, no frameworks. Colours from the first version
+   of this page, kept because they were right the first time. */
+
+:root {
+  --bg: #14121b;
+  --ink: #cfc9dd;
+  --dim: #6f687f;
+  --head: #a99bd4;
+  --link: #8fb3e8;
+  --soft: #b8a8e0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.4rem 4rem;
+  text-wrap: pretty;
+}
+
+header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  font-size: 0.9rem;
+}
+
+.mast {
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--head);
+}
+
+header nav { display: flex; gap: 1rem; }
+
+h1, h2, h3 {
+  font-weight: normal;
+  letter-spacing: 0.03em;
+  color: var(--head);
+  line-height: 1.3;
+}
+
+h1 { font-size: 1.6rem; margin: 0 0 1.2rem; }
+h2 { font-size: 1.05rem; margin: 3rem 0 1rem; color: var(--dim); }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--link);
+}
+
+a:hover { border-bottom-style: solid; }
+
+.mast, header a, footer a, .pieces a { border-bottom: none; }
+.mast:hover, header a:hover, footer a:hover, .pieces a:hover { border-bottom: 1px dotted var(--link); }
+
+p { margin: 0 0 1.4rem; }
+
+em { color: var(--soft); }
+strong { color: var(--soft); font-weight: normal; }
+
+time {
+  display: block;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.meta { margin-bottom: 2.2rem; }
+
+.pieces { list-style: none; margin: 0; padding: 0; }
+
+.pieces li {
+  margin-bottom: 1.7rem;
+  padding-bottom: 1.7rem;
+  border-bottom: 1px solid #241f31;
+}
+
+.pieces li:last-child { border-bottom: none; }
+
+.pieces .summary {
+  display: block;
+  color: var(--dim);
+  font-size: 0.95rem;
+}
+
+blockquote {
+  margin: 1.6rem 0;
+  padding-left: 1.1rem;
+  border-left: 1px solid #3a3350;
+  color: var(--dim);
+}
+
+code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  color: var(--soft);
+}
+
+hr { border: none; border-top: 1px solid #241f31; margin: 2.5rem 0; }
+
+footer {
+  margin-top: 5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #241f31;
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
+footer p { margin: 0 0 0.4rem; }
+
+@media (max-width: 30rem) {
+  body { font-size: 1rem; padding: 1.8rem 1.1rem 3rem; }
+  h1 { font-size: 1.4rem; }
+}

@@ -1,0 +1,30 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+      - run: python3 build.py
+      - run: python3 check.py
+
+      - name: the committed site matches the build
+        run: |
+          git diff --exit-code || {
+            echo "::error::the committed site does not match build.py."
+            echo "Someone edited site/ or the templates without republishing,"
+            echo "or committed built files by hand. Run ./publish.sh."
+            exit 1
+          }
