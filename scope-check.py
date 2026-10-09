@@ -39,7 +39,12 @@ ALLOWED_EXACT = {
     "sitemap.xml",
     "style.css",
 }
-ALLOWED_DIRS = ("pieces/", "about/", "now/")
+ALLOWED_DIRS = (
+    "site/",  # the source: content, templates, assets
+    "pieces/",  # generated: pieces/<slug>/index.html
+    "about/",
+    "now/",
+)
 ALLOWED_WORKFLOWS = (".github/workflows/check.yml",)
 
 
